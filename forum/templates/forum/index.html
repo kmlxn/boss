@@ -1,0 +1,67 @@
+{% load staticfiles %}
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'forum/style.css' %}" />
+
+    <title>localizator</title>
+</head>
+
+<body>
+
+    <h1><a href="{% url 'forum:index' %}">Localizator</a></h1>
+
+<div class="grid">
+    <div class="col-1-8">
+        <nav class="module">
+            {% if categories %}
+                <h3>Categories</h3>
+                <ul>
+                    {% for category in categories %}
+                        <li>
+                            <a href="{% url 'forum:show_category' category.name %}" id="{{category.name}}">
+                                {{category.title}}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No categories are available.</p>
+            {% endif %}
+        </nav>
+    </div>
+    <div class="col-7-8">
+        {% if latest_topic_list %}
+            {% for topic in latest_topic_list %}
+                <div class="grid">
+                    <div class="col-1-2">
+                        <section class="module">
+                            <h4>
+                                <a href="{% url 'forum:show_topic' topic.category.name topic.id %}">
+                                    {{ topic.name }}
+                                </a>
+                            </h4>
+                            <p>{{ topic.text }}</p>
+                        </section>
+                    </div>
+                    <div class="col-1-2">
+                        {% if topic.image %}
+                            <section class="module">
+                                <img width="100px" src="{{ topic.image.url }}">
+                            </section>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No topics are available.</p>
+        {% endif %}
+    </div>
+</div>
+
+</body>

@@ -1,0 +1,81 @@
+{% load staticfiles %}
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'forum/style.css' %}" />
+
+    <title>localizator</title>
+</head>
+
+<body>
+
+<div class="grid">
+    <div class="col-1-8">
+        <nav class="module">
+            {% if categories %}
+                <h3>Categories</h3>
+                <ul>
+                    {% for category in categories %}
+                        <li>
+                            <a href="{% url 'forum:show_category' category.name %}" id="{{category.name}}">
+                                {{category.title}}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No categories are available.</p>
+            {% endif %}
+        </nav>
+    </div>
+    <div class="col-7-8">
+        <h1>{{ topic.name }}</h1>
+
+        <p>{{ topic.text }}</p>
+        
+        {% if topic.comment_set.all %}
+            {% for comment in topic.comment_set.all %}
+                <div class="grid">
+                    <div class="col-1-2">
+                        <section class="module">
+                            <p>{{ comment.text }}</p>
+                        </section>
+                    </div>
+                    <div class="col-1-2">
+                        {% if comment.image %}
+                            <section class="module">
+                                <img width="100px" src="{{ comment.image.url }}">
+                            </section>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No comments are available.</p>
+        {% endif %}
+        <div class="grid">
+            <div class="col-1-2">
+                <div class="module">
+                    <form action="{% url 'forum:add_comment' topic.category.name topic.id %}" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <textarea name="comment_text" id="comment_input"></textarea>
+                        <input type="file" name="comment_image">
+                        <button type="submit">Leave comment</button>
+                    </form>
+                </div>
+            </div>
+            <div class="col-1-2">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% if error_message %}
+    <p><strong>{{ error_message }}</strong></p>
+{% endif %}
