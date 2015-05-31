@@ -22,7 +22,7 @@ class Topic(models.Model):
     text = models.TextField()
     pub_date = models.DateTimeField('date published')
     publishers_ip = models.CharField(max_length=100)
-    image = models.ImageField(upload_to='images', null=True, blank=True)
+    image = models.FileField(upload_to='images', null=True, blank=True)
 
     def __str__(self):
         return self.text
@@ -42,7 +42,7 @@ class Comment(models.Model):
     text = models.TextField()
     publishers_ip = models.CharField(max_length=100)
     pub_date = models.DateTimeField('date published')
-    image = models.ImageField(upload_to='images', null=True, blank=True)
+    image = models.FileField(upload_to='images', null=True, blank=True)
 
     def __str__(self):
         return self.text
