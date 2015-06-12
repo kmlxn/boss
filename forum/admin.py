@@ -10,13 +10,13 @@ class CommentInLine(admin.TabularInline):
 
 class TopicAdmin(admin.ModelAdmin):
     fieldsets = [
-        (None, {'fields': ['text', 'number', 'publishers_ip', 'name', 'image', 'category']}),
+        (None, {'fields': ['text', 'number', 'publishers_ip', 'name', 'image', 'category', 'upvotes', 'downvotes']}),
         ('Date information', {'fields': ['pub_date'], 'classes': ['collapse']}),
     ]
     inlines = [CommentInLine]
-    list_display = ('text', 'pub_date', 'was_published_recently')
+    list_display = ('name', 'pub_date', 'was_published_recently')
     list_filter = ['pub_date', 'category']
-    search_fields = ['text']
+    search_fields = ['name']
 
 
 class TopicInLine(admin.TabularInline):

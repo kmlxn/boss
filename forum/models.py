@@ -22,11 +22,12 @@ class Topic(models.Model):
     text = models.TextField()
     pub_date = models.DateTimeField('date published')
     publishers_ip = models.CharField(max_length=100)
+    upvotes = models.PositiveIntegerField(default=0)
+    downvotes = models.PositiveIntegerField(default=0)
     image = models.FileField(upload_to='images', null=True, blank=True)
 
     def __str__(self):
         return self.text
-
 
     def was_published_recently(self):
         return self.pub_date >= timezone.now() - datetime.timedelta(days=1)
@@ -42,6 +43,8 @@ class Comment(models.Model):
     text = models.TextField()
     publishers_ip = models.CharField(max_length=100)
     pub_date = models.DateTimeField('date published')
+    upvotes = models.PositiveIntegerField(default=0)
+    downvotes = models.PositiveIntegerField(default=0)
     image = models.FileField(upload_to='images', null=True, blank=True)
 
     def __str__(self):

@@ -2,15 +2,16 @@ from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from django.utils import timezone
-import os
+from django.db.models import F
 from django.conf import settings
+import os
 
 from .forms import *
 from .models import Topic, Category
 
 
 def show_index(request):
-    latest_topic_list = Topic.objects.order_by('-pub_date')[:5]
+    latest_topic_list = Topic.objects.order_by(F('downvotes')-F('upvotes'))[:5]
     categories = Category.objects.all()
     context = {
         'latest_topic_list': latest_topic_list,
