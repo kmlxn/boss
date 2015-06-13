@@ -85,13 +85,13 @@ def add_comment_to_topic(request, category_name, topic_id):
         image=form.cleaned_data['comment_image'],
     )
 
-    return HttpResponseRedirect(reverse('forum:show_topic', args=(category_name, topic.id)))
+    return HttpResponseRedirect(reverse('forum:show_topic', args=(category.name, topic.id)))
 
 
 def show_category(request, category_name):
     category = get_object_or_404(Category, name=category_name)
     categories = Category.objects.all()
-    topics = category.topic_set.order_by('-pub_date')
+    topics = category.topic_set.order_by(F('downvotes')-F('upvotes'))
     context = {
         'topics': topics,
         'category': category,
@@ -116,3 +116,22 @@ def add_category(request):
     category.save()
 
     return HttpResponseRedirect(reverse('forum:index'))
+
+
+def vote_for_topic(request, category_name, topic_id):
+    category = get_object_or_404(Category, name=category_name)
+    topic = get_object_or_404(Topic, id=topic_id, category=category)
+
+    if request.POST['type'] == 'upvote':
+        topic.upvotes += 1
+    if request.POST['type'] == 'downvote':
+        topic.downvotes += 1
+
+    topic.save()
+
+    if request.POST['referer'] == 'index_page':
+        return HttpResponseRedirect(reverse('forum:index'))
+    if request.POST['referer'] == 'topic_page':
+        return HttpResponseRedirect(reverse('forum:show_topic', args=(category.name, topic.id)))
+    if request.POST['referer'] == 'category_page':
+        return HttpResponseRedirect(reverse('forum:show_category', args=(category.name,)))

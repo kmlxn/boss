@@ -140,13 +140,6 @@ td {
     padding-right: 10px;
 }
 
-button[type=submit] {
-    background-color: grey;
-    border: none;
-    padding: 4px;
-    float: right;
-}
-
 textarea {
     border: 1px solid grey;
     width: 100%;
@@ -154,4 +147,26 @@ textarea {
 
 input.name {
     width: 100%;
+}
+
+.button {
+    background-color: grey;
+    border: none;
+    padding: 4px;
+}
+
+.button-start-topic {
+    float: right;
+}
+
+.button-leave-comment {
+    float: right;
+}
+
+.button-upvote {
+
+}
+
+.button-downvote {
+    
 }

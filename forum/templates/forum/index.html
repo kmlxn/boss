@@ -40,6 +40,22 @@
                     <div class="col-1-2">
                         <section class="module">
                             <h4>
+                                {{ topic.upvotes }}
+                                <form method="post"
+                                    action="{% url 'forum:vote_for_topic' topic.category.name topic.id %}">
+                                    <input type="hidden" value="upvote" name="type">
+                                    <input type="hidden" value="index_page" name="referer">
+                                    <button type="submit" class="button button-upvote">+</button>
+                                    {% csrf_token %}
+                                </form>
+                                <form method="post"
+                                    action="{% url 'forum:vote_for_topic' topic.category.name topic.id %}">
+                                    <input type="hidden" value="downvote" name="type">
+                                    <input type="hidden" value="index_page" name="referer">
+                                    <button type="submit" class="button button-downvote">-</button>
+                                    {% csrf_token %}
+                                </form>
+                                {{ topic.downvotes }}
                                 <a href="{% url 'forum:show_topic' topic.category.name topic.id %}">
                                     {{ topic.name }}
                                 </a>

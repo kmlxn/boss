@@ -5,6 +5,7 @@ class CommentForm(forms.Form):
     comment_text = forms.CharField(label="Comment's text", widget=forms.Textarea)
     comment_image = forms.FileField(required=False)
 
+
 class AddTopicForm(forms.Form):
     topic_name = forms.CharField(label="Topic's name", max_length=255)
     topic_text = forms.CharField(label="Topic's text", widget=forms.Textarea)

@@ -40,6 +40,23 @@
                 <div class="grid">
                     <div class="col-1-2">
                         <section class="module">
+                            {{ topic.upvotes }}
+                            <form method="post"
+                                action="{% url 'forum:vote_for_topic' topic.category.name topic.id %}">
+                                <input type="hidden" value="upvote" name="type">
+                                <input type="hidden" value="category_page" name="referer">
+                                <button type="submit" class="button button-upvote">+</button>
+                                {% csrf_token %}
+                            </form>
+                            <form method="post"
+                                action="{% url 'forum:vote_for_topic' topic.category.name topic.id %}">
+                                <input type="hidden" value="downvote" name="type">
+                                <input type="hidden" value="category_page" name="referer">
+                                <button type="submit" class="button button-downvote">-</button>
+                                {% csrf_token %}
+                            </form>
+                            {{ topic.downvotes }}
+
                             <h4><a href="{% url 'forum:show_topic' category.name topic.id %}">{{ topic.name }}</a></h4>
                             <p>{{ topic.text }}</p>
                         </section>
@@ -65,7 +82,7 @@
                         <textarea name="topic_text" placeholder="Topic text"></textarea>
                         <label for="image">Image:</label>
                         <input type="file" name="image">
-                        <button type="submit">Start new topic</button>
+                        <button type="submit" class="button button-start-topic">Start new topic</button>
                     </form>
                 </div>
             </div>

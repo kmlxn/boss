@@ -32,6 +32,23 @@
         </nav>
     </div>
     <div class="col-7-8">
+        {{ topic.upvotes }}
+        <form method="post"
+            action="{% url 'forum:vote_for_topic' topic.category.name topic.id %}">
+            <input type="hidden" value="upvote" name="type">
+            <input type="hidden" value="topic_page" name="referer">
+            <button type="submit" class="button vote">+</button>
+            {% csrf_token %}
+        </form>
+        <form method="post"
+            action="{% url 'forum:vote_for_topic' topic.category.name topic.id %}">
+            <input type="hidden" value="downvote" name="type">
+            <input type="hidden" value="topic_page" name="referer">
+            <button type="submit" class="button vote">-</button>
+            {% csrf_token %}
+        </form>
+        {{ topic.downvotes }}
+
         <h1>{{ topic.name }}</h1>
 
         <p>{{ topic.text }}</p>
@@ -63,7 +80,7 @@
                         {% csrf_token %}
                         <textarea name="comment_text" id="comment_input"></textarea>
                         <input type="file" name="comment_image">
-                        <button type="submit">Leave comment</button>
+                        <button type="submit" class="button button-leave-comment">Leave comment</button>
                     </form>
                 </div>
             </div>
