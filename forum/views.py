@@ -44,7 +44,7 @@ def add_topic(request, category_name):
             publishers_ip='127.0.0.0',
             number=topic_number,
         )
-        return HttpResponseRedirect(reverse('forum:index'))
+        return HttpResponseRedirect(reverse('forum:show_index'))
 
     category = get_object_or_404(Category, name=category_name)
     categories = Category.objects.all()
@@ -107,7 +107,7 @@ def add_category(request):
     form = AddCategoryForm(request.POST, request.FILES)
 
     if not form.is_valid():
-        return HttpResponseRedirect(reverse('forum:index', args={'error_message': 'Not valid input'}))
+        return HttpResponseRedirect(reverse('forum:show_index', args={'error_message': 'Not valid input'}))
     
     category = Category(
         name=form.cleaned_data['category_name'],
@@ -115,7 +115,7 @@ def add_category(request):
     )
     category.save()
 
-    return HttpResponseRedirect(reverse('forum:index'))
+    return HttpResponseRedirect(reverse('forum:show_index'))
 
 
 def vote_for_topic(request, category_name, topic_id):
@@ -130,7 +130,7 @@ def vote_for_topic(request, category_name, topic_id):
     topic.save()
 
     if request.POST['referer'] == 'index_page':
-        return HttpResponseRedirect(reverse('forum:index'))
+        return HttpResponseRedirect(reverse('forum:show_index'))
     if request.POST['referer'] == 'topic_page':
         return HttpResponseRedirect(reverse('forum:show_topic', args=(category.name, topic.id)))
     if request.POST['referer'] == 'category_page':
