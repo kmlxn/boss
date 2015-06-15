@@ -15,9 +15,9 @@ def show_index(request):
     latest_topics = []
 
     for i, topic in enumerate(latest_topic_list):
-        if (i % 3 == 0):
+        if (i % 2 == 0):
             latest_topics.append([])
-        latest_topics[i // 3].append(topic)
+        latest_topics[i // 2].append(topic)
 
     categories = Category.objects.all()
     context = {
@@ -31,12 +31,12 @@ def show_category(request, category_name):
     category = get_object_or_404(Category, name=category_name)
     categories = Category.objects.all()
     grouped_topics = []
-    
+
     topics = category.topic_set.order_by(F('downvotes')-F('upvotes'))
     for i, topic in enumerate(topics):
-        if (i % 3 == 0):
+        if (i % 2 == 0):
             grouped_topics.append([])
-        grouped_topics[i // 3].append(topic)
+        grouped_topics[i // 2].append(topic)
 
     context = {
         'latest_topics': grouped_topics,

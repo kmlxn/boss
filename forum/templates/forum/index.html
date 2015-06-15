@@ -7,7 +7,7 @@
 
     <title>localizator</title>
     
-    <link href="/static/forum/bootstrap/simplex_theme/bootstrap.css" rel="stylesheet">
+    <link href="/static/forum/bootstrap/flatly_theme/bootstrap.css" rel="stylesheet">
     <link rel="stylesheet" href="/static/forum/style.css">
     
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -53,46 +53,53 @@
     </div>
 </div>
 
-{% if latest_topics %}
-    <div class="container">
-        {% for topic_row in latest_topics %}
-            <div class="row">    
-                {% for topic in topic_row %}
-                    <div class="col-lg-4">
-                        <h4>
-                            <a href="{% url 'forum:show_topic' topic.category.name topic.id %}">
-                                {{ topic.name }}
-                            </a>
-                        </h4>
-                        {% if topic.image %}
-                            <img style="float: left" width="150px" src="{{ topic.image.url }}">
-                        {% endif %}
-                        <p>{{ topic.text }}</p>
-                        <div class="clearfix"></div>
-                        {{ topic.upvotes }}
-                        <form method="post" style="display: inline" 
-                            action="{% url 'forum:vote_for_topic' topic.category.name topic.id %}">
-                            <input type="hidden" value="upvote" name="type">
-                            <input type="hidden" value="index_page" name="referer">
-                            <button type="submit" class="glyphicon glyphicon-chevron-up vote-button"></button>
-                            {% csrf_token %}
-                        </form>
-                        <form method="post" style="display: inline" 
-                            action="{% url 'forum:vote_for_topic' topic.category.name topic.id %}">
-                            <input type="hidden" value="downvote" name="type">
-                            <input type="hidden" value="index_page" name="referer">
-                            <button type="submit" class="glyphicon glyphicon-chevron-down vote-button"></button>
-                            {% csrf_token %}
-                        </form>
-                        {{ topic.downvotes }}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8">
+            {% if latest_topics %}
+                {% for topic_row in latest_topics %}
+                    <div class="row">    
+                        {% for topic in topic_row %}
+                            <div class="col-lg-6">
+                                <h4>
+                                    <a href="{% url 'forum:show_topic' topic.category.name topic.id %}">
+                                        {{ topic.name }}
+                                    </a>
+                                </h4>
+                                {% if topic.image %}
+                                    <img style="float: left" width="150px" src="{{ topic.image.url }}">
+                                {% endif %}
+                                <p>{{ topic.text }}</p>
+                                <div class="clearfix"></div>
+                                {{ topic.upvotes }}
+                                <form method="post" style="display: inline" 
+                                    action="{% url 'forum:vote_for_topic' topic.category.name topic.id %}">
+                                    <input type="hidden" value="upvote" name="type">
+                                    <input type="hidden" value="index_page" name="referer">
+                                    <button type="submit" class="glyphicon glyphicon-chevron-up vote-button"></button>
+                                    {% csrf_token %}
+                                </form>
+                                <form method="post" style="display: inline" 
+                                    action="{% url 'forum:vote_for_topic' topic.category.name topic.id %}">
+                                    <input type="hidden" value="downvote" name="type">
+                                    <input type="hidden" value="index_page" name="referer">
+                                    <button type="submit" class="glyphicon glyphicon-chevron-down vote-button"></button>
+                                    {% csrf_token %}
+                                </form>
+                                {{ topic.downvotes }}
+                            </div>
+                        {% endfor %}
                     </div>
                 {% endfor %}
-            </div>
-        {% endfor %}
+            {% else %}
+                <p>No topics are available.</p>
+            {% endif %}
+        </div>
+        <div class="col-lg-4">
+            fdjfdkjfj
+        </div>
     </div>
-{% else %}
-    <p>No topics are available.</p>
-{% endif %}
+</div>
 
 
 </body>

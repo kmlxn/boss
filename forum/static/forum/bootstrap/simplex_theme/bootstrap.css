@@ -4394,8 +4394,8 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   }
 }
 .navbar-default {
-  /*background-color: #ffffff;*/
-  /*border-color: #eeeeee;*/
+  background-color: #ffffff;
+  border-color: #eeeeee;
 }
 .navbar-default .navbar-brand {
   color: #777777;
@@ -4873,14 +4873,14 @@ a.badge:focus {
 }
 .container .jumbotron,
 .container-fluid .jumbotron {
-  /*border-radius: 6px;*/
+  border-radius: 6px;
 }
 .jumbotron .container {
   max-width: 100%;
 }
 @media screen and (min-width: 768px) {
   .jumbotron {
-    /*padding: 48px 0;*/
+    padding: 48px 0;
   }
   .container .jumbotron,
   .container-fluid .jumbotron {
