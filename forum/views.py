@@ -12,12 +12,38 @@ from .models import Topic, Category
 
 def show_index(request):
     latest_topic_list = Topic.objects.order_by(F('downvotes')-F('upvotes'))[:5]
+    latest_topics = []
+
+    for i, topic in enumerate(latest_topic_list):
+        if (i % 3 == 0):
+            latest_topics.append([])
+        latest_topics[i // 3].append(topic)
+
     categories = Category.objects.all()
     context = {
-        'latest_topic_list': latest_topic_list,
+        'latest_topics': latest_topics,
         'categories': categories,
     }
     return render(request, 'forum/index.html', context)
+
+
+def show_category(request, category_name):
+    category = get_object_or_404(Category, name=category_name)
+    categories = Category.objects.all()
+    grouped_topics = []
+    
+    topics = category.topic_set.order_by(F('downvotes')-F('upvotes'))
+    for i, topic in enumerate(topics):
+        if (i % 3 == 0):
+            grouped_topics.append([])
+        grouped_topics[i // 3].append(topic)
+
+    context = {
+        'latest_topics': grouped_topics,
+        'category': category,
+        'categories': categories,
+    }
+    return render(request, 'forum/category.html', context)
 
 
 def show_topic(request, category_name, topic_id):
@@ -86,18 +112,6 @@ def add_comment_to_topic(request, category_name, topic_id):
     )
 
     return HttpResponseRedirect(reverse('forum:show_topic', args=(category.name, topic.id)))
-
-
-def show_category(request, category_name):
-    category = get_object_or_404(Category, name=category_name)
-    categories = Category.objects.all()
-    topics = category.topic_set.order_by(F('downvotes')-F('upvotes'))
-    context = {
-        'topics': topics,
-        'category': category,
-        'categories': categories,
-    }
-    return render(request, 'forum/category.html', context)
 
 
 def add_category(request):
