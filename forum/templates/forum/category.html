@@ -61,7 +61,7 @@
                         {% if topic.image %}
                             <img style="float: left" width="150px" src="{{ topic.image.url }}">
                         {% endif %}
-                        <p>{{ topic.text }}</p>
+                        <p>{{ topic.description }}</p>
                         <div class="clearfix"></div>
                         {{ topic.upvotes }}
                         <form method="post" style="display: inline" 
@@ -95,6 +95,7 @@
                         {% csrf_token %}
                         <input type="text" name="topic_name" placeholder="Topic name" class="name">
                         <textarea name="topic_text" placeholder="Topic text"></textarea>
+                        <textarea name="topic_description" placeholder="Topic description"></textarea>
                         <label for="image">Image:</label>
                         <input type="file" name="image">
                         <button type="submit" class="button button-start-topic">Start new topic</button>

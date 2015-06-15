@@ -9,6 +9,7 @@ class CommentForm(forms.Form):
 class AddTopicForm(forms.Form):
     topic_name = forms.CharField(label="Topic's name", max_length=255)
     topic_text = forms.CharField(label="Topic's text", widget=forms.Textarea)
+    topic_description = forms.CharField(label="Topic's description", widget=forms.Textarea)
     image = forms.FileField(required=False)
 
 

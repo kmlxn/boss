@@ -64,6 +64,7 @@ def add_topic(request, category_name):
         topic_number = len(Topic.objects.all()) + 1
         category.topic_set.create(
             text=form.cleaned_data['topic_text'],
+            description=form.cleaned_data['topic_description'],
             name=form.cleaned_data['topic_name'],
             image=form.cleaned_data['image'],
             pub_date=timezone.now(),

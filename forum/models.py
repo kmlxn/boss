@@ -19,6 +19,7 @@ class Topic(models.Model):
     category = models.ForeignKey(Category, null=True)
     number = models.IntegerField()
     name = models.CharField(max_length=255)
+    description = models.TextField()
     text = models.TextField()
     pub_date = models.DateTimeField('date published')
     publishers_ip = models.CharField(max_length=100)
@@ -27,7 +28,7 @@ class Topic(models.Model):
     image = models.FileField(upload_to='images', null=True, blank=True)
 
     def __str__(self):
-        return self.text
+        return self.name
 
     def was_published_recently(self):
         return self.pub_date >= timezone.now() - datetime.timedelta(days=1)

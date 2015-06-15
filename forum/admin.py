@@ -10,7 +10,8 @@ class CommentInLine(admin.TabularInline):
 
 class TopicAdmin(admin.ModelAdmin):
     fieldsets = [
-        (None, {'fields': ['text', 'number', 'publishers_ip', 'name', 'image', 'category', 'upvotes', 'downvotes']}),
+        (None, {'fields': ['text', 'number', 'publishers_ip', 'name', 
+            'image', 'category', 'upvotes', 'downvotes', 'description']}),
         ('Date information', {'fields': ['pub_date'], 'classes': ['collapse']}),
     ]
     inlines = [CommentInLine]
