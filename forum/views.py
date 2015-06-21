@@ -7,7 +7,7 @@ from django.conf import settings
 import os
 
 from .forms import *
-from .models import Topic, Category
+from .models import Topic, Category, Comment
 
 
 def show_index(request):
@@ -50,7 +50,11 @@ def show_topic(request, category_name, topic_id):
     category = get_object_or_404(Category, name=category_name)
     topic = get_object_or_404(Topic, id=topic_id, category=category)
     categories = Category.objects.all()
-    return render(request, 'forum/topic.html', {'topic': topic, 'categories': categories})
+    comments = topic.comment_set.order_by(F('downvotes')-F('upvotes'))
+
+    return render(request, 'forum/topic.html', 
+        {'topic': topic, 'categories': categories, 'comments': comments}
+    )
 
 
 def start_topic(request, category_name=None):
@@ -150,3 +154,17 @@ def vote_for_topic(request, category_name, topic_id):
         return HttpResponseRedirect(reverse('forum:show_topic', args=(category.name, topic.id)))
     if request.POST['referer'] == 'category_page':
         return HttpResponseRedirect(reverse('forum:show_category', args=(category.name,)))
+
+
+def vote_for_comment(request, category_name, topic_id, comment_id):
+    category = get_object_or_404(Category, name=category_name)
+    topic = get_object_or_404(Topic, id=topic_id, category=category)
+    comment = get_object_or_404(Comment, id=comment_id, topic=topic)
+
+    if request.POST['type'] == 'upvote':
+        comment.upvotes += 1
+    if request.POST['type'] == 'downvote':
+        comment.downvotes += 1
+
+    comment.save()
+    return HttpResponseRedirect(reverse('forum:show_topic', args=(category.name, topic.id)))

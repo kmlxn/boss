@@ -27,18 +27,36 @@
         <div class="clearfix"></div>
         
         <div class="panel panel-default">
-          <div class="panel-body">
+            <div class="panel-body">
+                {% if topic.image %}
+                    <p><img src="{{ topic.image.url }}" width="700px"></p>
+                {% endif %}
                 <p>{{ topic.text }}</p>
-          </div>
+            </div>
         </div>
         
         <br>
         <h3>Comments</h3>
-        {% if topic.comment_set.all %}
-            {% for comment in topic.comment_set.all %}
+        {% if comments %}
+            {% for comment in comments %}
                 <div class="panel panel-default">
-                  <div class="panel-body">
-                      <p>{{ comment.text }}</p>
+                    <div class="panel-body">
+                        {{ comment.upvotes }}
+                        <form method="post" style="display: inline;"
+                            action="{% url 'forum:vote_for_comment' topic.category.name topic.id comment.id %}">
+                            <input type="hidden" value="upvote" name="type">
+                            <button type="submit" class="glyphicon glyphicon-chevron-up vote-button"></button>
+                            {% csrf_token %}
+                        </form>
+                        <form method="post" style="display: inline"
+                            action="{% url 'forum:vote_for_comment' topic.category.name topic.id comment.id %}">
+                            <input type="hidden" value="downvote" name="type">
+                            <button type="submit" class="glyphicon glyphicon-chevron-down vote-button"></button>
+                            {% csrf_token %}
+                        </form>
+                        {{ comment.downvotes }}
+
+                        <p>{{ comment.text }}</p>
                         {% if comment.image %}
                             <img width="100px" src="{{ comment.image.url }}">
                         {% endif %}
@@ -49,7 +67,9 @@
             <p>No comments are available.</p>
         {% endif %}
         
-        <form action="{% url 'forum:add_comment' topic.category.name topic.id %}" method="post" enctype="multipart/form-data">
+        <form action="{% url 'forum:add_comment' topic.category.name topic.id %}" 
+            method="post" enctype="multipart/form-data"
+        >
             {% csrf_token %}
             <textarea name="comment_text" id="comment_input" style="width: 100%" placeholder="comment text"></textarea>
             <button type="submit" class="btn btn-default" style="float: right">Leave comment</button>
