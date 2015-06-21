@@ -1,51 +1,15 @@
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
+{% extends 'forum/base.html' %}
 
-    <link href="/static/forum/bootstrap/flatly_theme/bootstrap.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="/static/forum/style.css" />
 
-    <title>localizator</title>
-</head>
-
-<body>
-
-<nav class="navbar navbar-default navbar-static-top">
-    <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" 
-                data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="{% url 'forum:show_index' %}">Localizator</a>
-        </div>
-
-        <div class="navbar-collapse collapse" id="navbar">
-            <ul class="nav navbar-nav">
-                {% if categories %}
-                    {% for category in categories %}
-                        <li><a href="{% url 'forum:show_category' category.name %}">{{ category.title }}</a></li>
-                    {% endfor %}
-                {% else %}
-                    <p>No categories are available.</p>
-                {% endif %}
-            </ul>
-        </div>
-    </div>
-</nav>
-
-<div class="container">
-    <div class="jumbotron">
+{% block jumbotron %}
+<div class="jumbotron">
         <a class="btn btn-primary btn-lg" style="float: right" href="{% url 'forum:start_topic' category.name %}">Start new topic</a>
         <p>Browse global network here, at Interwebar.</p>
     </div>
-</div>
+{% endblock %}
+
+
+{% block content %}
 
 {% if latest_topics %}
     <div class="container">
@@ -88,4 +52,4 @@
     <p>No topics are available.</p>
 {% endif %}
 
-</body>
+{% endblock %}
