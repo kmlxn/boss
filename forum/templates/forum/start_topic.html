@@ -1,0 +1,105 @@
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <link href="/static/forum/bootstrap/flatly_theme/bootstrap.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/static/forum/style.css" />
+
+    <title>localizator</title>
+</head>
+
+<body>
+
+<nav class="navbar navbar-default navbar-static-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" 
+                data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="{% url 'forum:show_index' %}">Localizator</a>
+        </div>
+
+        <div class="navbar-collapse collapse" id="navbar">
+            <ul class="nav navbar-nav">
+                {% if categories %}
+                    {% for category in categories %}
+                        <li><a href="{% url 'forum:show_category' category.name %}">{{ category.title }}</a></li>
+                    {% endfor %}
+                {% else %}
+                    <p>No categories are available.</p>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="row">
+          <div class="col-lg-10">
+            <div class="well bs-component">
+              <form class="form-horizontal" action="{% url 'forum:start_topic' %}" 
+                method="post" enctype="multipart/form-data"
+              >
+                {% csrf_token %}
+                <fieldset>
+                  <legend>Legend</legend>
+                  <div class="form-group">
+                    <label class="col-lg-2 control-label" for="topic_name">Name</label>
+                    <div class="col-lg-10">
+                      <input type="text" placeholder="Name" id="topic_name" name="topic_name" class="form-control">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-lg-2 control-label" for="topic_text">Text</label>
+                    <div class="col-lg-10">
+                      <textarea id="topic_text" name="topic_text" rows="3" class="form-control"></textarea>
+                      <span class="help-block">A longer block of help text that breaks onto a new line and may extend beyond one line.</span>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-lg-2 control-label" for="topic_description">Description</label>
+                    <div class="col-lg-10">
+                      <textarea id="topic_description" name="topic_description" rows="3" class="form-control">
+                      </textarea>
+                      <span class="help-block">A longer block of help text that breaks onto a new line and may extend beyond one line.</span>
+                    </div>
+                  </div>
+        <input type="file" name="image">
+
+            <div class="form-group">
+                  <label for="select" class="col-lg-2 control-label">Category</label>
+                  <div class="col-lg-10">
+                    <select class="form-control" id="select" name="topic_category">
+                      <option value="">-- --</option>
+                        {% for cat in categories %}
+                          <option 
+                            value="{{ cat.name }}" 
+                            {% if category == cat.name %} selected="selected" {% endif %}
+                          >
+                            {{ cat.title }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                  </div>
+                </div>
+                  <div class="form-group">
+                    <div class="col-lg-10 col-lg-offset-2">
+                      <button class="btn btn-primary" type="submit">Submit</button>
+                    </div>
+                  </div>
+                </fieldset>
+              </form>
+            <div class="btn btn-primary btn-xs" id="source-button" style="display: none;">&lt; &gt;</div></div>
+          </div>
+        </div>
+
+    <b>{{ error_message }}</b>
+</div>
+</body>

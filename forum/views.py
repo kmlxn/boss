@@ -53,38 +53,38 @@ def show_topic(request, category_name, topic_id):
     return render(request, 'forum/topic.html', {'topic': topic, 'categories': categories})
 
 
-def add_topic(request, category_name):
-    if request.method != 'POST':
-        return
+def start_topic(request, category_name=None):
+    if request.method == 'POST':
+        form = AddTopicForm(request.POST, request.FILES)
 
-    category = get_object_or_404(Category, name=category_name)
-    form = AddTopicForm(request.POST, request.FILES)
+        if form.is_valid():
+            category = get_object_or_404(Category, name=form.cleaned_data['topic_category'])
+            topic_number = len(Topic.objects.all()) + 1
+            category.topic_set.create(
+                text=form.cleaned_data['topic_text'],
+                description=form.cleaned_data['topic_description'],
+                name=form.cleaned_data['topic_name'],
+                image=form.cleaned_data['image'],
+                pub_date=timezone.now(),
+                publishers_ip='127.0.0.0',
+                number=topic_number,
+            )
+            return HttpResponseRedirect(reverse('forum:show_category', args=(category.name,)))
+        else:
+            context = {
+                'category': category_name,
+                'categories': Category.objects.all(),
+                'error_message': 'error',
+            }
 
-    if form.is_valid():
-        topic_number = len(Topic.objects.all()) + 1
-        category.topic_set.create(
-            text=form.cleaned_data['topic_text'],
-            description=form.cleaned_data['topic_description'],
-            name=form.cleaned_data['topic_name'],
-            image=form.cleaned_data['image'],
-            pub_date=timezone.now(),
-            publishers_ip='127.0.0.0',
-            number=topic_number,
-        )
-        return HttpResponseRedirect(reverse('forum:show_index'))
+            return render(request, 'forum/start_topic.html', context)
+    else:
+        context = {
+            'category': category_name,
+            'categories': Category.objects.all(),
+        }
 
-    category = get_object_or_404(Category, name=category_name)
-    categories = Category.objects.all()
-    topics = category.topic_set.order_by('-pub_date')
-    context = {
-        'topics': topics,
-        'category': category,
-        'categories': categories,
-        'error_message': "Invalid input",
-    }
-
-    return render(request, 'forum/category.html', context)
-
+        return render(request, 'forum/start_topic.html', context)
 
 
 def add_comment_to_topic(request, category_name, topic_id):
