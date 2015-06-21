@@ -1,96 +1,66 @@
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
+{% extends 'forum/base.html' %}
 
-    <link rel="stylesheet" type="text/css" href="/static/forum/style.css" />
 
-    <title>localizator</title>
-</head>
-
-<body>
-
-<div class="grid">
-    <div class="col-1-8">
-        <nav class="module">
-            {% if categories %}
-                <h3>Categories</h3>
-                <ul>
-                    {% for category in categories %}
-                        <li>
-                            <a href="{% url 'forum:show_category' category.name %}" id="{{category.name}}">
-                                {{category.title}}
-                            </a>
-                        </li>
-                    {% endfor %}
-                </ul>
-            {% else %}
-                <p>No categories are available.</p>
-            {% endif %}
-        </nav>
-    </div>
-    <div class="col-7-8">
-        {{ topic.upvotes }}
-        <form method="post"
-            action="{% url 'forum:vote_for_topic' topic.category.name topic.id %}">
-            <input type="hidden" value="upvote" name="type">
-            <input type="hidden" value="topic_page" name="referer">
-            <button type="submit" class="button vote">+</button>
-            {% csrf_token %}
-        </form>
-        <form method="post"
-            action="{% url 'forum:vote_for_topic' topic.category.name topic.id %}">
-            <input type="hidden" value="downvote" name="type">
-            <input type="hidden" value="topic_page" name="referer">
-            <button type="submit" class="button vote">-</button>
-            {% csrf_token %}
-        </form>
-        {{ topic.downvotes }}
+{% block content %}
+    <div class="col-lg-8">        
+        <div style="float: right; margin-top: 40px;">
+            {{ topic.upvotes }}
+            <form method="post" style="display: inline;"
+                action="{% url 'forum:vote_for_topic' topic.category.name topic.id %}">
+                <input type="hidden" value="upvote" name="type">
+                <input type="hidden" value="topic_page" name="referer">
+                <button type="submit" class="glyphicon glyphicon-chevron-up vote-button"></button>
+                {% csrf_token %}
+            </form>
+            <form method="post" style="display: inline"
+                action="{% url 'forum:vote_for_topic' topic.category.name topic.id %}">
+                <input type="hidden" value="downvote" name="type">
+                <input type="hidden" value="topic_page" name="referer">
+                <button type="submit" class="glyphicon glyphicon-chevron-down vote-button"></button>
+                {% csrf_token %}
+            </form>
+            {{ topic.downvotes }}
+        </div>
 
         <h1>{{ topic.name }}</h1>
 
-        <p>{{ topic.text }}</p>
+        <div class="clearfix"></div>
         
+        <div class="panel panel-default">
+          <div class="panel-body">
+                <p>{{ topic.text }}</p>
+          </div>
+        </div>
+        
+        <br>
+        <h3>Comments</h3>
         {% if topic.comment_set.all %}
             {% for comment in topic.comment_set.all %}
-                <div class="grid">
-                    <div class="col-1-2">
-                        <section class="module">
-                            <p>{{ comment.text }}</p>
-                        </section>
-                    </div>
-                    <div class="col-1-2">
+                <div class="panel panel-default">
+                  <div class="panel-body">
+                      <p>{{ comment.text }}</p>
                         {% if comment.image %}
-                            <section class="module">
-                                <img width="100px" src="{{ comment.image.url }}">
-                            </section>
+                            <img width="100px" src="{{ comment.image.url }}">
                         {% endif %}
-                    </div>
+                  </div>
                 </div>
             {% endfor %}
         {% else %}
             <p>No comments are available.</p>
         {% endif %}
-        <div class="grid">
-            <div class="col-1-2">
-                <div class="module">
-                    <form action="{% url 'forum:add_comment' topic.category.name topic.id %}" method="post" enctype="multipart/form-data">
-                        {% csrf_token %}
-                        <textarea name="comment_text" id="comment_input"></textarea>
-                        <input type="file" name="comment_image">
-                        <button type="submit" class="button button-leave-comment">Leave comment</button>
-                    </form>
-                </div>
-            </div>
-            <div class="col-1-2">
-            </div>
-        </div>
+        
+        <form action="{% url 'forum:add_comment' topic.category.name topic.id %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <textarea name="comment_text" id="comment_input" style="width: 100%" placeholder="comment text"></textarea>
+            <button type="submit" class="btn btn-default" style="float: right">Leave comment</button>
+            <label for="image">Image</label>
+            <input type="file" name="comment_image" id="image">
+            <div class="clearfix"></div>
+        </form>
+
+        {% if error_message %}
+            <p><strong>{{ error_message }}</strong></p>
+        {% endif %}
     </div>
-</div>
 
-
-{% if error_message %}
-    <p><strong>{{ error_message }}</strong></p>
-{% endif %}
+{% endblock %}
