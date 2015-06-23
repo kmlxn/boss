@@ -11,7 +11,7 @@ from .models import Topic, Category, Comment
 
 
 def show_index(request):
-    latest_topic_list = Topic.objects.order_by(F('downvotes')-F('upvotes'))[:5]
+    latest_topic_list = Topic.objects.order_by(F('downvotes')-F('upvotes'))[:10]
     latest_topics = []
 
     for i, topic in enumerate(latest_topic_list):

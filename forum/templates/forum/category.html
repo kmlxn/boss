@@ -17,32 +17,36 @@
             <div class="row">    
                 {% for topic in topic_row %}
                     <div class="col-lg-4">
+                        <div class="vote">
+                            {{ topic.upvotes }}
+                            <form method="post" style="display: inline" 
+                                action="{% url 'forum:vote_for_topic' category.name topic.id %}">
+                                <input type="hidden" value="upvote" name="type">
+                                <input type="hidden" value="index_page" name="referer">
+                                <button type="submit" class="glyphicon glyphicon-chevron-up vote-button"></button>
+                                {% csrf_token %}
+                            </form>
+                            <form method="post" style="display: inline" 
+                                action="{% url 'forum:vote_for_topic' category.name topic.id %}">
+                                <input type="hidden" value="downvote" name="type">
+                                <input type="hidden" value="index_page" name="referer">
+                                <button type="submit" class="glyphicon glyphicon-chevron-down vote-button"></button>
+                                {% csrf_token %}
+                            </form>
+                            {{ topic.downvotes }}
+                        </div>
                         <h4>
                             <a href="{% url 'forum:show_topic' category.name topic.id %}">
                                 {{ topic.name }}
                             </a>
                         </h4>
                         {% if topic.image %}
-                            <img style="float: left" width="150px" src="{{ topic.image.url }}">
+                            <img class="thumb" width="150px" src="{{ topic.image.url }}">
                         {% endif %}
                         <p>{{ topic.description }}</p>
                         <div class="clearfix"></div>
-                        {{ topic.upvotes }}
-                        <form method="post" style="display: inline" 
-                            action="{% url 'forum:vote_for_topic' category.name topic.id %}">
-                            <input type="hidden" value="upvote" name="type">
-                            <input type="hidden" value="index_page" name="referer">
-                            <button type="submit" class="glyphicon glyphicon-chevron-up vote-button"></button>
-                            {% csrf_token %}
-                        </form>
-                        <form method="post" style="display: inline" 
-                            action="{% url 'forum:vote_for_topic' category.name topic.id %}">
-                            <input type="hidden" value="downvote" name="type">
-                            <input type="hidden" value="index_page" name="referer">
-                            <button type="submit" class="glyphicon glyphicon-chevron-down vote-button"></button>
-                            {% csrf_token %}
-                        </form>
-                        {{ topic.downvotes }}
+                        <br>
+                        <br>
                     </div>
                 {% endfor %}
             </div>
