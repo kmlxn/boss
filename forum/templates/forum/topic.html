@@ -31,7 +31,7 @@
                 {% if topic.image %}
                     <p><img src="{{ topic.image.url }}" width="718px"></p>
                 {% endif %}
-                <p>{{ topic.text }}</p>
+                <p>{{ topic.text | safe }}</p>
             </div>
         </div>
         
