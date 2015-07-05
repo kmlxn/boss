@@ -17,3 +17,6 @@ class AddTopicForm(forms.Form):
 class AddCategoryForm(forms.Form):
     category_name = forms.CharField(label="Category name", max_length=255)
     category_title = forms.CharField(label="Category title", max_length=255)
+
+class UploadImageForm(forms.Form):
+    image = forms.FileField()

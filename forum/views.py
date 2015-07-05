@@ -5,8 +5,9 @@ from django.utils import timezone
 from django.db.models import F
 from django.conf import settings
 import os
+import uuid
 
-from .forms import *
+from . import forms
 from .models import Topic, Category, Comment
 
 
@@ -59,7 +60,7 @@ def show_topic(request, category_name, topic_id):
 
 def start_topic(request, category_name=None):
     if request.method == 'POST':
-        form = AddTopicForm(request.POST, request.FILES)
+        form = forms.AddTopicForm(request.POST, request.FILES)
 
         if form.is_valid():
             category = get_object_or_404(Category, name=form.cleaned_data['topic_category'])
@@ -98,7 +99,7 @@ def add_comment_to_topic(request, category_name, topic_id):
     category = get_object_or_404(Category, name=category_name)
     topic = get_object_or_404(Topic, id=topic_id, category=category)
 
-    form = CommentForm(request.POST, request.FILES)
+    form = forms.CommentForm(request.POST, request.FILES)
 
     if not form.is_valid():
         return render(request, 'forum/topic.html', {
@@ -123,7 +124,7 @@ def add_category(request):
     if request.method != 'POST':
         return
 
-    form = AddCategoryForm(request.POST, request.FILES)
+    form = forms.AddCategoryForm(request.POST, request.FILES)
 
     if not form.is_valid():
         return HttpResponseRedirect(reverse('forum:show_index', args={'error_message': 'Not valid input'}))
@@ -168,3 +169,26 @@ def vote_for_comment(request, category_name, topic_id, comment_id):
 
     comment.save()
     return HttpResponseRedirect(reverse('forum:show_topic', args=(category.name, topic.id)))
+
+
+def upload_image(request):
+    form = forms.UploadImageForm(request.POST, request.FILES)
+
+    if not form.is_valid():
+        return HttpResponse(status=400)
+
+    url = save_image_and_return_url(form.cleaned_data['image'])
+    return HttpResponse(url)
+
+
+def save_image_and_return_url(file):
+    filename = file._get_name()
+    dir_name = str(uuid.uuid4())
+    os.mkdir(os.path.join(settings.MEDIA_ROOT, 'images', dir_name))
+    fd = open(os.path.join(settings.MEDIA_ROOT, 'images', dir_name, filename), 'wb')
+    
+    for chunk in file.chunks():
+        fd.write(chunk)
+    fd.close()
+
+    return settings.MEDIA_URL + 'images/' + dir_name + '/' + filename
