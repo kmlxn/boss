@@ -11,4 +11,10 @@
 .vote {
     float: right;
     margin-top: 13px;
+    margin-left: 5px;
+}
+
+h4 a, h4 a:hover {
+    color: #333333;
+    text-decoration: none;
 }
