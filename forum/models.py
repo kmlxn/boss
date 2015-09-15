@@ -25,7 +25,7 @@ class Topic(models.Model):
     publishers_ip = models.CharField(max_length=100)
     upvotes = models.PositiveIntegerField(default=0)
     downvotes = models.PositiveIntegerField(default=0)
-    image = models.FileField(upload_to='images', null=True, blank=True)
+    image = models.ImageField(upload_to='images', null=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -46,7 +46,7 @@ class Comment(models.Model):
     pub_date = models.DateTimeField('date published')
     upvotes = models.PositiveIntegerField(default=0)
     downvotes = models.PositiveIntegerField(default=0)
-    image = models.FileField(upload_to='images', null=True, blank=True)
+    image = models.ImageField(upload_to='images', null=True, blank=True)
 
     def __str__(self):
         return self.text
