@@ -20,5 +20,6 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^captcha/', include('captcha.urls')),
     url(r'^', include('forum.urls', namespace="forum")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
