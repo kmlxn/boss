@@ -10,7 +10,7 @@ class CommentInLine(admin.TabularInline):
 
 class TopicAdmin(admin.ModelAdmin):
     fieldsets = [
-        (None, {'fields': ['text', 'number', 'publishers_ip', 'name', 
+        (None, {'fields': ['text', 'number', 'publishers_ip', 'name',
             'image', 'category', 'upvotes', 'downvotes', 'description']}),
         ('Date information', {'fields': ['pub_date'], 'classes': ['collapse']}),
     ]
@@ -26,7 +26,7 @@ class TopicInLine(admin.TabularInline):
 
 
 class CategoryAdmin(admin.ModelAdmin):
-    fields = ['name', 'title']
+    fields = ['name', 'title', 'description']
     inlines = [TopicInLine]
     list_display = ('name', 'title', 'topic_count')
     search_fields = ['title']

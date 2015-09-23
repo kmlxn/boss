@@ -3,7 +3,7 @@
 {% block jumbotron %}
 <div class="jumbotron">
     <a class="btn btn-primary btn-lg" style="float: right; margin-top: -8px;" href="{% url 'forum:start_topic' %}">Start new topic</a>
-    <p>Browse global network here, at Interwebar.</p>
+    <p>Browse global network here, at Pishloq.</p>
 </div>
 {% endblock %}
 
@@ -11,19 +11,19 @@
 <div class="col-lg-8">
     {% if latest_topics %}
         {% for topic_row in latest_topics %}
-            <div class="row">    
+            <div class="row">
                 {% for topic in topic_row %}
                     <div class="col-lg-6">
                         <div class="vote">
                             {{ topic.upvotes }}
-                            <form method="post" style="display: inline" 
+                            <form method="post" style="display: inline"
                                 action="{% url 'forum:vote_for_topic' topic.category.name topic.id %}">
                                 <input type="hidden" value="upvote" name="type">
                                 <input type="hidden" value="index_page" name="referer">
                                 <button type="submit" class="glyphicon glyphicon-chevron-up vote-button"></button>
                                 {% csrf_token %}
                             </form>
-                            <form method="post" style="display: inline" 
+                            <form method="post" style="display: inline"
                                 action="{% url 'forum:vote_for_topic' topic.category.name topic.id %}">
                                 <input type="hidden" value="downvote" name="type">
                                 <input type="hidden" value="index_page" name="referer">
@@ -37,7 +37,7 @@
                                 {{ topic.name }}
                             </a>
                         </h4>
-                        
+
                         {% if topic.image %}
                             <img class="thumb" width="150px" src="{{ topic.image.url }}">
                         {% endif %}
