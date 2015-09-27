@@ -15,7 +15,7 @@ class TopicAdmin(admin.ModelAdmin):
         ('Date information', {'fields': ['pub_date'], 'classes': ['collapse']}),
     ]
     inlines = [CommentInLine]
-    list_display = ('name', 'pub_date', 'was_published_recently')
+    list_display = ('name', 'pub_date', 'was_published_recently', 'hot')
     list_filter = ['pub_date', 'category']
     search_fields = ['name']
 

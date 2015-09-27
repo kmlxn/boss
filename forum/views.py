@@ -4,6 +4,7 @@ from django.core.urlresolvers import reverse
 from django.utils import timezone
 from django.db.models import F
 from django.conf import settings
+
 import os
 import uuid
 
@@ -11,18 +12,20 @@ from . import forms
 from .models import Topic, Category, Comment
 
 
-def show_index(request):
-    latest_topic_list = Topic.objects.order_by(F('downvotes')-F('upvotes'))[:10]
-    latest_topics = []
 
-    for i, topic in enumerate(latest_topic_list):
+def show_index(request):
+    latest_topics = list(Topic.objects.order_by('pub_date')[:50])
+    hot_topics = sorted(latest_topics, key=lambda x: x.hot(), reverse=True)
+    grouped_hot_topics = []
+
+    for i, topic in enumerate(hot_topics):
         if (i % 2 == 0):
-            latest_topics.append([])
-        latest_topics[i // 2].append(topic)
+            grouped_hot_topics.append([])
+        grouped_hot_topics[i // 2].append(topic)
 
     categories = Category.objects.all()
     context = {
-        'latest_topics': latest_topics,
+        'latest_topics': grouped_hot_topics,
         'categories': categories,
     }
     return render(request, 'forum/index.html', context)
@@ -53,7 +56,7 @@ def show_topic(request, category_name, topic_id):
     categories = Category.objects.all()
     comments = topic.comment_set.order_by(F('downvotes')-F('upvotes'))
 
-    return render(request, 'forum/topic.html', 
+    return render(request, 'forum/topic.html',
         {'topic': topic, 'categories': categories, 'comments': comments}
     )
 
@@ -128,7 +131,7 @@ def add_category(request):
 
     if not form.is_valid():
         return HttpResponseRedirect(reverse('forum:show_index', args={'error_message': 'Not valid input'}))
-    
+
     category = Category(
         name=form.cleaned_data['category_name'],
         title=form.cleaned_data['category_title'],
@@ -186,7 +189,7 @@ def save_image_and_return_url(file):
     dir_name = str(uuid.uuid4())
     os.mkdir(os.path.join(settings.MEDIA_ROOT, 'images', dir_name))
     fd = open(os.path.join(settings.MEDIA_ROOT, 'images', dir_name, filename), 'wb')
-    
+
     for chunk in file.chunks():
         fd.write(chunk)
     fd.close()
