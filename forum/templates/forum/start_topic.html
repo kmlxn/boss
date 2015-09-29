@@ -5,7 +5,7 @@
     <div class="row">
           <div class="col-lg-10">
             <div class="well bs-component">
-              <form class="form-horizontal" action="{% url 'forum:start_topic' %}" 
+              <form class="form-horizontal" action="{% url 'forum:start_topic' %}"
                 method="post" enctype="multipart/form-data"
               >
                 {% csrf_token %}
@@ -14,38 +14,42 @@
                   <div class="form-group">
                     <label class="col-lg-2 control-label" for="topic_name">Name</label>
                     <div class="col-lg-10">
-                      <input type="text" placeholder="Name" id="topic_name" name="topic_name" class="form-control">
+                        {{ add_topic_form.topic_name }}
+                      <!-- <input type="text" placeholder="Name" id="topic_name" name="topic_name" class="form-control"> -->
                     </div>
                   </div>
                   <div class="form-group">
                     <label class="col-lg-2 control-label" for="topic_text">Text</label>
                     <div class="col-lg-10">
-                      <textarea id="topic_text" name="topic_text" rows="3" class="form-control"></textarea>
+                        {{ add_topic_form.topic_text }}
+                      <!-- <textarea id="topic_text" name="topic_text" rows="3" class="form-control"></textarea> -->
                       <span class="help-block">A longer block of help text that breaks onto a new line and may extend beyond one line.</span>
                     </div>
                   </div>
                   <div class="form-group">
                     <label class="col-lg-2 control-label" for="topic_description">Description</label>
                     <div class="col-lg-10">
-                      <textarea id="topic_description" name="topic_description" rows="3" class="form-control"></textarea>
+                        {{ add_topic_form.topic_description }}
+                      <!-- <textarea id="topic_description" name="topic_description" rows="3" class="form-control"></textarea> -->
                       <span class="help-block">A longer block of help text that breaks onto a new line and may extend beyond one line.</span>
                     </div>
                   </div>
                   <div class="form-group">
                     <label class="col-lg-2 control-label" for="topic_description">Image</label>
                     <div class="col-lg-10">
-                        <input type="file" name="image">
+                        {{ add_topic_form.topic_image }}
+                        <!-- <input type="file" name="image"> -->
                     </div>
                   </div>
 
-            <div class="form-group">
+                <div class="form-group">
                   <label for="select" class="col-lg-2 control-label">Category</label>
                   <div class="col-lg-10">
-                    <select class="form-control" id="select" name="topic_category">
+                    <select class="form-control" id="topic_category" name="topic_category">
                       <option value="">-- --</option>
                         {% for cat in categories %}
-                          <option 
-                            value="{{ cat.name }}" 
+                          <option
+                            value="{{ cat.name }}"
                             {% if category == cat.name %} selected="selected" {% endif %}
                           >
                             {{ cat.title }}
@@ -53,6 +57,12 @@
                         {% endfor %}
                     </select>
                   </div>
+                </div>
+                <div class="form-group">
+                    <label for="select" class="col-lg-2 control-label">Captcha</label>
+                    <div class="col-lg-10">
+                        {{ add_topic_form.topic_captcha }}
+                    </div>
                 </div>
                   <div class="form-group">
                     <div class="col-lg-10 col-lg-offset-2">

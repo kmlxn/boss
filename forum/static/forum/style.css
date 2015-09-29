@@ -1,20 +1,22 @@
+footer {
+    background-color: #233C57;
+    padding-top: 60px;
+    padding-bottom: 25px;
+}
+h4 a, h4 a:hover {
+    color: #FFFFFF;
+    text-decoration: none;
+}
 .vote-button {
     background: transparent;
     border: none;
 }
-
 .thumb {
     float: left;
     margin: 5px 10px 5px 0;
 }
-
 .vote {
     float: right;
     margin-top: 13px;
     margin-left: 5px;
-}
-
-h4 a, h4 a:hover {
-    color: #FFFFFF;
-    text-decoration: none;
 }
