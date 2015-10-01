@@ -36,7 +36,7 @@
                             {{ topic.downvotes }}
                         </div>
                         <h4>
-                            <a href="{% url 'forum:show_topic' category.name topic.id %}">
+                            <a href="{% url 'forum:show_or_comment_topic' category.name topic.id %}">
                                 {{ topic.name }}
                             </a>
                         </h4>

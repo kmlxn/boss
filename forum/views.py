@@ -50,15 +50,42 @@ def show_category(request, category_name):
     return render(request, 'forum/category.html', context)
 
 
-def show_topic(request, category_name, topic_id):
+def show_or_comment_topic(request, category_name, topic_id):
     category = get_object_or_404(Category, name=category_name)
     topic = get_object_or_404(Topic, id=topic_id, category=category)
+    comments = topic.comment_set.order_by('pub_date')
     categories = Category.objects.all()
-    comments = topic.comment_set.order_by(F('downvotes')-F('upvotes'))
 
-    return render(request, 'forum/topic.html',
-        {'topic': topic, 'categories': categories, 'comments': comments}
-    )
+    if request.method == 'POST':
+        form = forms.CommentForm(request.POST, request.FILES)
+
+        if not form.is_valid():
+            return render(request, 'forum/topic.html', {
+                'categories': categories,
+                'topic': topic,
+                'comments': comments,
+                'error_message': "Invalid input",
+            })
+
+        comment_number = topic.comment_set.count() + 1
+        topic.comment_set.create(
+            text=form.cleaned_data['comment_text'],
+            number=comment_number,
+            publishers_ip='127.0.0.0',
+            pub_date=timezone.now(),
+            image=form.cleaned_data['comment_image'],
+        )
+
+        return HttpResponseRedirect(reverse('forum:show_or_comment_topic', args=(category.name, topic.id)))
+
+    else:
+        form = forms.CommentForm()
+
+        return render(request, 'forum/topic.html', {
+            'topic': topic,
+            'categories': categories,
+            'comments': comments,
+        })
 
 
 def start_topic(request, category_name=None):
@@ -98,34 +125,6 @@ def start_topic(request, category_name=None):
         return render(request, 'forum/start_topic.html', context)
 
 
-def add_comment_to_topic(request, category_name, topic_id):
-    if request.method != 'POST':
-        return
-
-    category = get_object_or_404(Category, name=category_name)
-    topic = get_object_or_404(Topic, id=topic_id, category=category)
-
-    form = forms.CommentForm(request.POST, request.FILES)
-
-    if not form.is_valid():
-        return render(request, 'forum/topic.html', {
-            'categories': Category.objects.all(),
-            'topic': topic,
-            'error_message': "Invalid input.",
-        })
-
-    comment_number = topic.comment_set.count() + 1
-    topic.comment_set.create(
-        text=form.cleaned_data['comment_text'],
-        number=comment_number,
-        publishers_ip='127.0.0.0',
-        pub_date=timezone.now(),
-        image=form.cleaned_data['comment_image'],
-    )
-
-    return HttpResponseRedirect(reverse('forum:show_topic', args=(category.name, topic.id)))
-
-
 def add_category(request):
     if request.method != 'POST':
         return
@@ -158,7 +157,7 @@ def vote_for_topic(request, category_name, topic_id):
     if request.POST['referer'] == 'index_page':
         return HttpResponseRedirect(reverse('forum:show_index'))
     if request.POST['referer'] == 'topic_page':
-        return HttpResponseRedirect(reverse('forum:show_topic', args=(category.name, topic.id)))
+        return HttpResponseRedirect(reverse('forum:show_or_comment_topic', args=(category.name, topic.id)))
     if request.POST['referer'] == 'category_page':
         return HttpResponseRedirect(reverse('forum:show_category', args=(category.name,)))
 
@@ -174,7 +173,7 @@ def vote_for_comment(request, category_name, topic_id, comment_id):
         comment.downvotes += 1
 
     comment.save()
-    return HttpResponseRedirect(reverse('forum:show_topic', args=(category.name, topic.id)))
+    return HttpResponseRedirect(reverse('forum:show_or_comment_topic', args=(category.name, topic.id)))
 
 
 def upload_image(request):

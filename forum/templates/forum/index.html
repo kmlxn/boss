@@ -33,7 +33,7 @@
                             {{ topic.downvotes }}
                         </div>
                         <h4>
-                            <a href="{% url 'forum:show_topic' topic.category.name topic.id %}">
+                            <a href="{% url 'forum:show_or_comment_topic' topic.category.name topic.id %}">
                                 {{ topic.name }}
                             </a>
                         </h4>
@@ -60,7 +60,7 @@
             {% for topic_row in latest_topics %}
                 {% for topic in topic_row %}
                 <li style="list-style-type: none;">
-                    <a href="{% url 'forum:show_topic' topic.category.name topic.id %}">
+                    <a href="{% url 'forum:show_or_comment_topic' topic.category.name topic.id %}">
                         {{ topic.name }}
                     </a>
                 </li>
@@ -74,7 +74,7 @@
             {% for topic_row in latest_topics %}
                 {% for topic in topic_row %}
                 <li style="list-style-type: none;">
-                    <a href="{% url 'forum:show_topic' topic.category.name topic.id %}">
+                    <a href="{% url 'forum:show_or_comment_topic' topic.category.name topic.id %}">
                         {{ topic.name }}
                     </a>
                 </li>

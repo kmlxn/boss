@@ -2,7 +2,7 @@
 
 
 {% block content %}
-    <div class="col-lg-8">        
+    <div class="col-lg-8">
         <div style="float: right; margin-top: 40px;">
             {{ topic.upvotes }}
             <form method="post" style="display: inline;"
@@ -25,7 +25,7 @@
         <h1>{{ topic.name }}</h1>
 
         <div class="clearfix"></div>
-        
+
         <div class="panel panel-default">
             <div class="panel-body">
                 {% if topic.image %}
@@ -34,7 +34,7 @@
                 <p>{{ topic.text | safe }}</p>
             </div>
         </div>
-        
+
         <br>
         <h3>Comments</h3>
         {% if comments %}
@@ -66,8 +66,8 @@
         {% else %}
             <p>No comments are available.</p>
         {% endif %}
-        
-        <form action="{% url 'forum:add_comment' topic.category.name topic.id %}" 
+
+        <form action="{% url 'forum:show_or_comment_topic' topic.category.name topic.id %}"
             method="post" enctype="multipart/form-data"
         >
             {% csrf_token %}
