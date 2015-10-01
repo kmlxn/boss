@@ -3,8 +3,11 @@ from captcha.fields import CaptchaField
 
 
 class CommentForm(forms.Form):
-    comment_text = forms.CharField(label="Comment's text", widget=forms.Textarea)
+    comment_text = forms.CharField(label="Comment's text", widget=forms.Textarea(
+        attrs={"id": "comment_text", "style": "width: 100%", "placeholder": "comment text"}
+    ))
     comment_image = forms.FileField(required=False)
+    comment_captcha = CaptchaField()
 
 
 class AddTopicForm(forms.Form):

@@ -71,10 +71,11 @@
             method="post" enctype="multipart/form-data"
         >
             {% csrf_token %}
-            <textarea name="comment_text" id="comment_input" style="width: 100%" placeholder="comment text"></textarea>
+            {{ add_comment_form.comment_text }}
             <button type="submit" class="btn btn-default" style="float: right">Leave comment</button>
             <label for="image">Image</label>
-            <input type="file" name="comment_image" id="image">
+            {{ add_comment_form.comment_image }}
+            {{ add_comment_form.comment_captcha }}
             <div class="clearfix"></div>
         </form>
 

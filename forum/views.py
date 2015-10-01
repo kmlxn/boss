@@ -64,6 +64,7 @@ def show_or_comment_topic(request, category_name, topic_id):
                 'categories': categories,
                 'topic': topic,
                 'comments': comments,
+                'add_comment_form': form,
                 'error_message': "Invalid input",
             })
 
@@ -85,6 +86,7 @@ def show_or_comment_topic(request, category_name, topic_id):
             'topic': topic,
             'categories': categories,
             'comments': comments,
+            'add_comment_form': form,
         })
 
 
