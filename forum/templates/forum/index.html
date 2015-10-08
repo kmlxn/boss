@@ -56,20 +56,6 @@
 <div class="col-lg-4">
     {% if grouped_hot_topics %}
         <ul>
-            <h4>Promoted</h4>
-            {% for topic_row in grouped_hot_topics %}
-                {% for topic in topic_row %}
-                <li style="list-style-type: none;">
-                    <a href="{% url 'forum:show_or_comment_topic' topic.category.name topic.id %}">
-                        {{ topic.name }}
-                    </a>
-                </li>
-                {% endfor %}
-            {% endfor %}
-        </ul>
-    {% endif %}
-    {% if grouped_hot_topics %}
-        <ul>
             <h4>Controversial</h4>
             {% for topic_row in grouped_hot_topics %}
                 {% for topic in topic_row %}
