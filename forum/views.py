@@ -25,7 +25,7 @@ def show_index(request):
 
     categories = Category.objects.all()
     context = {
-        'latest_topics': grouped_hot_topics,
+        'grouped_hot_topics': grouped_hot_topics,
         'categories': categories,
     }
     return render(request, 'forum/index.html', context)

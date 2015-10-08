@@ -9,8 +9,8 @@
 
 {% block content %}
 <div class="col-lg-8">
-    {% if latest_topics %}
-        {% for topic_row in latest_topics %}
+    {% if grouped_hot_topics %}
+        {% for topic_row in grouped_hot_topics %}
             <div class="row">
                 {% for topic in topic_row %}
                     <div class="col-lg-6">
@@ -54,10 +54,10 @@
     {% endif %}
 </div>
 <div class="col-lg-4">
-    {% if latest_topics %}
+    {% if grouped_hot_topics %}
         <ul>
             <h4>Promoted</h4>
-            {% for topic_row in latest_topics %}
+            {% for topic_row in grouped_hot_topics %}
                 {% for topic in topic_row %}
                 <li style="list-style-type: none;">
                     <a href="{% url 'forum:show_or_comment_topic' topic.category.name topic.id %}">
@@ -68,10 +68,10 @@
             {% endfor %}
         </ul>
     {% endif %}
-    {% if latest_topics %}
+    {% if grouped_hot_topics %}
         <ul>
             <h4>Controversial</h4>
-            {% for topic_row in latest_topics %}
+            {% for topic_row in grouped_hot_topics %}
                 {% for topic in topic_row %}
                 <li style="list-style-type: none;">
                     <a href="{% url 'forum:show_or_comment_topic' topic.category.name topic.id %}">
