@@ -11,9 +11,9 @@
 
 {% block content %}
 
-{% if latest_topics %}
+{% if grouped_hot_topics %}
     <div class="container">
-        {% for topic_row in latest_topics %}
+        {% for topic_row in grouped_hot_topics %}
             <div class="row">
                 {% for topic in topic_row %}
                     <div class="col-lg-4">

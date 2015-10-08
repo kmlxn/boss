@@ -34,16 +34,18 @@ def show_index(request):
 def show_category(request, category_name):
     category = get_object_or_404(Category, name=category_name)
     categories = Category.objects.all()
-    grouped_topics = []
+    grouped_hot_topics = []
 
-    topics = category.topic_set.order_by(F('downvotes')-F('upvotes'))
-    for i, topic in enumerate(topics):
+    latest_topics = list(category.topic_set.order_by('pub_date')[:50])
+    hot_topics = sorted(latest_topics, key=lambda x: x.hot(), reverse=True)
+
+    for i, topic in enumerate(hot_topics):
         if (i % 2 == 0):
-            grouped_topics.append([])
-        grouped_topics[i // 2].append(topic)
+            grouped_hot_topics.append([])
+        grouped_hot_topics[i // 2].append(topic)
 
     context = {
-        'latest_topics': grouped_topics,
+        'grouped_hot_topics': grouped_hot_topics,
         'category': category,
         'categories': categories,
     }
