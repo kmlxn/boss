@@ -16,6 +16,7 @@ from .models import Topic, Category, Comment
 def show_index(request):
     latest_topics = list(Topic.objects.order_by('pub_date')[:50])
     hot_topics = sorted(latest_topics, key=lambda x: x.hot(), reverse=True)
+    controversial_topics = sorted(latest_topics, key=lambda x: x.controversy(), reverse=True)
     grouped_hot_topics = []
 
     for i, topic in enumerate(hot_topics):
@@ -27,6 +28,7 @@ def show_index(request):
     context = {
         'grouped_hot_topics': grouped_hot_topics,
         'categories': categories,
+        'controversial_topics': controversial_topics,
     }
     return render(request, 'forum/index.html', context)
 

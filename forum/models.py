@@ -67,6 +67,22 @@ class Topic(models.Model):
         return ups - downs
 
 
+    def controversy(self):
+        """Reddit controversy algorithm. Original version -
+        https://github.com/reddit/reddit/blob/master/r2/r2/lib/db/_sorts.pyx"""
+        if self.downvotes <= 0 or self.upvotes <= 0:
+            return 0
+
+        magnitude = self.upvotes + self.downvotes
+
+        if self.upvotes > self.downvotes:
+            balance = float(self.downvotes) / self.upvotes
+        else:
+            balance = float(self.upvotes) / self.downvotes
+
+        return magnitude ** balance
+
+
 
 class Comment(models.Model):
     topic = models.ForeignKey(Topic)
