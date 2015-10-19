@@ -17,16 +17,10 @@ def show_index(request):
     latest_topics = list(Topic.objects.order_by('pub_date')[:50])
     hot_topics = sorted(latest_topics, key=lambda x: x.hot(), reverse=True)
     controversial_topics = sorted(latest_topics, key=lambda x: x.controversy(), reverse=True)
-    grouped_hot_topics = []
-
-    for i, topic in enumerate(hot_topics):
-        if (i % 2 == 0):
-            grouped_hot_topics.append([])
-        grouped_hot_topics[i // 2].append(topic)
 
     categories = Category.objects.all()
     context = {
-        'grouped_hot_topics': grouped_hot_topics,
+        'hot_topics': hot_topics,
         'categories': categories,
         'controversial_topics': controversial_topics,
     }
@@ -36,18 +30,11 @@ def show_index(request):
 def show_category(request, category_name):
     category = get_object_or_404(Category, name=category_name)
     categories = Category.objects.all()
-    grouped_hot_topics = []
-
     latest_topics = list(category.topic_set.order_by('pub_date')[:50])
     hot_topics = sorted(latest_topics, key=lambda x: x.hot(), reverse=True)
 
-    for i, topic in enumerate(hot_topics):
-        if (i % 2 == 0):
-            grouped_hot_topics.append([])
-        grouped_hot_topics[i // 2].append(topic)
-
     context = {
-        'grouped_hot_topics': grouped_hot_topics,
+        'hot_topics': hot_topics,
         'category': category,
         'categories': categories,
     }

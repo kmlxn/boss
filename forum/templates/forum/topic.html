@@ -1,9 +1,15 @@
 {% extends 'forum/base.html' %}
 
+{% block jumbotron %}
+<div class="message">
+    <span>
+        {{ topic.name }}
+    </span>
+</div>
+{% endblock %}
 
 {% block content %}
-    <div class="col-lg-8">
-        <div style="float: right; margin-top: 40px;">
+        <!-- <div style="float: right; margin-top: 40px;">
             {{ topic.upvotes }}
             <form method="post" style="display: inline;"
                 action="{% url 'forum:vote_for_topic' topic.category.name topic.id %}">
@@ -20,53 +26,55 @@
                 {% csrf_token %}
             </form>
             {{ topic.downvotes }}
-        </div>
+        </div> -->
+        <span style="margin-left:20px">
+            <span class="vote">
+                <form method="post" style="display: inline"
+                    action="{% url 'forum:vote_for_topic' topic.category.name topic.id %}">
+                    <input type="hidden" value="upvote" name="type">
+                    <input type="hidden" value="topic_page" name="referer">
+                    <button type="submit">+</button>
+                    {% csrf_token %}
+                </form>
+                <form method="post" style="display: inline"
+                    action="{% url 'forum:vote_for_topic' topic.category.name topic.id %}">
+                    <input type="hidden" value="downvote" name="type">
+                    <input type="hidden" value="topic_page" name="referer">
+                    <button type="submit">-</button>
+                    {% csrf_token %}
+                </form>
+            </span>
+            <em>september 13 12:31</em>
+        </span>
 
-        <h1>{{ topic.name }}</h1>
-
-        <div class="clearfix"></div>
-
-        <div class="panel panel-default">
-            <div class="panel-body">
+        <article>
+            <div class="discussion">
                 {% if topic.image %}
-                    <p><img src="{{ topic.image.url }}" width="718px"></p>
+                    <img width="300px" src="{{ topic.image.url }}" alt="" />
                 {% endif %}
-                <p>{{ topic.text | safe }}</p>
+                <p class="description">{{ topic.text | safe }}</p>
             </div>
-        </div>
-
+        </article>
         <br>
-        <h3>Comments</h3>
+        <hr>
+
         {% if comments %}
             {% for comment in comments %}
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                        {{ comment.upvotes }}
-                        <form method="post" style="display: inline;"
-                            action="{% url 'forum:vote_for_comment' topic.category.name topic.id comment.id %}">
-                            <input type="hidden" value="upvote" name="type">
-                            <button type="submit" class="glyphicon glyphicon-chevron-up vote-button"></button>
-                            {% csrf_token %}
-                        </form>
-                        <form method="post" style="display: inline"
-                            action="{% url 'forum:vote_for_comment' topic.category.name topic.id comment.id %}">
-                            <input type="hidden" value="downvote" name="type">
-                            <button type="submit" class="glyphicon glyphicon-chevron-down vote-button"></button>
-                            {% csrf_token %}
-                        </form>
-                        {{ comment.downvotes }}
-
-                        <p>{{ comment.text }}</p>
+                <article>
+                    <div class="discussion">
                         {% if comment.image %}
-                            <img width="100px" src="{{ comment.image.url }}">
+                            <img width="300px" src="{{ comment.image.url }}" alt="" />
                         {% endif %}
-                  </div>
-                </div>
+                        <p>{{ comment.text }}</p>
+                    </div>
+                </article>
+                <hr>
             {% endfor %}
         {% else %}
             <p>No comments are available.</p>
         {% endif %}
 
+<article>
         <form action="{% url 'forum:show_or_comment_topic' topic.category.name topic.id %}"
             method="post" enctype="multipart/form-data"
         >
@@ -82,6 +90,6 @@
         {% if error_message %}
             <p><strong>{{ error_message }}</strong></p>
         {% endif %}
-    </div>
+    </article>
 
 {% endblock %}

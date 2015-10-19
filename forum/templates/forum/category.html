@@ -2,58 +2,62 @@
 
 
 {% block jumbotron %}
-<div class="jumbotron">
-        <a class="btn btn-primary btn-lg" style="float: right" href="{% url 'forum:start_topic' category.name %}">Start new topic</a>
-        <p>{{ category.description }}</p>
-    </div>
+<div class="message">
+    <span>
+        {{ category.description }}
+    </span>
+</div>
 {% endblock %}
 
 
 {% block content %}
-
-{% if grouped_hot_topics %}
-    <div class="container">
-        {% for topic_row in grouped_hot_topics %}
-            <div class="row">
-                {% for topic in topic_row %}
-                    <div class="col-lg-4">
-                        <div class="vote">
-                            {{ topic.upvotes }}
-                            <form method="post" style="display: inline"
-                                action="{% url 'forum:vote_for_topic' category.name topic.id %}">
-                                <input type="hidden" value="upvote" name="type">
-                                <input type="hidden" value="index_page" name="referer">
-                                <button type="submit" class="glyphicon glyphicon-chevron-up vote-button"></button>
-                                {% csrf_token %}
-                            </form>
-                            <form method="post" style="display: inline"
-                                action="{% url 'forum:vote_for_topic' category.name topic.id %}">
-                                <input type="hidden" value="downvote" name="type">
-                                <input type="hidden" value="index_page" name="referer">
-                                <button type="submit" class="glyphicon glyphicon-chevron-down vote-button"></button>
-                                {% csrf_token %}
-                            </form>
-                            {{ topic.downvotes }}
-                        </div>
-                        <h4>
-                            <a href="{% url 'forum:show_or_comment_topic' category.name topic.id %}">
-                                {{ topic.name }}
-                            </a>
-                        </h4>
-                        {% if topic.image %}
-                            <img class="thumb" width="150px" src="{{ topic.image.url }}">
-                        {% endif %}
-                        <p>{{ topic.description }}</p>
-                        <div class="clearfix"></div>
-                        <br>
-                        <br>
+    {% if hot_topics %}
+        {% for topic in hot_topics %}
+            <article>
+                <div class="left_part">
+                    <div class="vote">
+                        <form method="post" style="display: inline"
+                            action="{% url 'forum:vote_for_topic' topic.category.name topic.id %}">
+                            <input type="hidden" value="upvote" name="type">
+                            <input type="hidden" value="category_page" name="referer">
+                            <button type="submit">+</button>
+                            {% csrf_token %}
+                        </form>
+                        <form method="post" style="display: inline"
+                            action="{% url 'forum:vote_for_topic' topic.category.name topic.id %}">
+                            <input type="hidden" value="downvote" name="type">
+                            <input type="hidden" value="category_page" name="referer">
+                            <button type="submit">-</button>
+                            {% csrf_token %}
+                        </form>
                     </div>
-                {% endfor %}
-            </div>
+                </div>
+                <div class="right_part">
+                    <span class="info">
+                        <em class="date">september 13 12:31</em>
+                    </span>
+                    <p class="title">
+                        <a href="{% url 'forum:show_or_comment_topic' topic.category.name topic.id %}">
+                            {{ topic.name }}
+                        </a>
+                    </p>
+                    <p class="description">{{ topic.description }}</p>
+                </div>
+            </article>
+            <hr>
         {% endfor %}
-    </div>
-{% else %}
-    <p>No topics are available.</p>
-{% endif %}
+    {% else %}
+        <p>No topics are available.</p>
+    {% endif %}
+{% endblock %}
 
+
+{% block sidebar %}
+<aside>
+    <a href="{% url 'forum:start_topic' category.name %}"
+        style="font-size: 25px; text-decoration: none;"
+    >
+        Start new topic
+    </a>
+</aside>
 {% endblock %}
