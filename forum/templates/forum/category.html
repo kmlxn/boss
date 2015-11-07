@@ -34,7 +34,7 @@
                 </div>
                 <div class="right_part">
                     <span class="info">
-                        <em class="date">{{ topic.pub_date | date:"M d H:m" }}</em>
+                        <em class="date">{{ topic.pub_date | date:"F d H:i" }}</em>
                     </span>
                     <p class="title">
                         <a href="{% url 'forum:show_or_comment_topic' topic.category.name topic.id %}">

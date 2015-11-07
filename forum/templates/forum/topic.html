@@ -45,7 +45,7 @@
                     {% csrf_token %}
                 </form>
             </span>
-            <em>{{ topic.pub_date | date:"M d H:m" }}</em>
+            <em>{{ topic.pub_date | date:"F d H:i" }}</em>
         </span>
 
         <article>
