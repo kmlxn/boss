@@ -137,14 +137,18 @@ article:after {
         width: auto;
     }
 }
-img {
+.thumb {
     border: 1px solid grey;
     float: left;
     margin-right: 10px;
     margin-bottom: 6px;
 }
-input, textarea {
+textarea {
     width: 100%;
+}
+input[type='text'], textarea {
+    font-family: Georgia;
+    font-size: 18px;
 }
 .start_topic {
     box-shadow: 0 0 1px 1px grey;
@@ -169,4 +173,31 @@ button {
     cursor: pointer;
     display: inline;
     width: 20px;
+}
+.comment_add_form {
+
+}
+.comment_add_form .comment_text {
+    width: 100%;
+    margin-bottom: 20px;
+}
+.comment_add_form .comment_submit {
+    float: right;
+}
+.comment_add_form .comment_image_div {
+    margin-bottom: 10px;
+}
+.comment_add_form .comment_captcha_div {
+}
+.captcha {
+    border: 1px solid black;
+    margin-bottom: -4px;
+}
+.comment_add_form .comment_captcha_text {
+    width: 40%;
+}
+.comment_error_message {
+    margin-top: 10px;
+    font-size: 18px;
+    font-weight: bold;
 }

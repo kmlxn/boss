@@ -1,4 +1,5 @@
 {% extends 'forum/base.html' %}
+{% load forum_add_class %}
 
 {% block jumbotron %}
 <div class="message">
@@ -50,7 +51,7 @@
         <article>
             <div class="discussion">
                 {% if topic.image %}
-                    <img width="300px" src="{{ topic.image.url }}" alt="" />
+                    <img class="thumb" width="300px" src="{{ topic.image.url }}" alt="" />
                 {% endif %}
                 <p class="description">{{ topic.text | safe }}</p>
             </div>
@@ -63,7 +64,7 @@
                 <article>
                     <div class="discussion">
                         {% if comment.image %}
-                            <img width="300px" src="{{ comment.image.url }}" alt="" />
+                            <img class="thumb" width="300px" src="{{ comment.image.url }}" alt="" />
                         {% endif %}
                         <p>{{ comment.text }}</p>
                     </div>
@@ -75,20 +76,27 @@
         {% endif %}
 
 <article>
+    <div class="discussion">
         <form action="{% url 'forum:show_or_comment_topic' topic.category.name topic.id %}"
-            method="post" enctype="multipart/form-data"
+            method="post" enctype="multipart/form-data" class="comment_add_form"
         >
             {% csrf_token %}
-            {{ add_comment_form.comment_text }}
-            <button type="submit" class="btn btn-default" style="float: right">Leave comment</button>
-            <label for="image">Image</label>
-            {{ add_comment_form.comment_image }}
-            {{ add_comment_form.comment_captcha }}
+            {{ add_comment_form.comment_text | add_class:"comment_text" }}
+            <div class="comment_image_div">
+                <button type="submit" class="comment_submit">Comment</button>
+                <label for="image">Image</label>
+                {{ add_comment_form.comment_image }}
+            </div>
+            <div class="comment_captcha_div">
+                {{ add_comment_form.comment_captcha | add_class:"comment_captcha_text" }}
+            </div>
             <div class="clearfix"></div>
         </form>
-
+    </div>
         {% if error_message %}
-            <p><strong>{{ error_message }}</strong></p>
+        <div class="comment_error_message">
+            {{ error_message }}
+        </div>
         {% endif %}
     </article>
 
