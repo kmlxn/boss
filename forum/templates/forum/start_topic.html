@@ -48,6 +48,7 @@
                 {% endfor %}
             </select>
         </div>
+        <hr>
         <div class="input_field">
             <label for="">Captcha:</label>
             {{ add_topic_form.topic_captcha }}
@@ -59,7 +60,7 @@
 
     <b>{{ error_message }}</b>
 </article>
-<script type="text/javascript" src="http://js.nicedit.com/nicEdit-latest.js"></script>
+<script type="text/javascript" src="/static/forum/script/nicEdit.js"></script>
 <script type="text/javascript">
     //<![CDATA[
     bkLib.onDomLoaded(function() {

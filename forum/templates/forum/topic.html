@@ -10,24 +10,6 @@
 {% endblock %}
 
 {% block content %}
-        <!-- <div style="float: right; margin-top: 40px;">
-            {{ topic.upvotes }}
-            <form method="post" style="display: inline;"
-                action="{% url 'forum:vote_for_topic' topic.category.name topic.id %}">
-                <input type="hidden" value="upvote" name="type">
-                <input type="hidden" value="topic_page" name="referer">
-                <button type="submit" class="glyphicon glyphicon-chevron-up vote-button"></button>
-                {% csrf_token %}
-            </form>
-            <form method="post" style="display: inline"
-                action="{% url 'forum:vote_for_topic' topic.category.name topic.id %}">
-                <input type="hidden" value="downvote" name="type">
-                <input type="hidden" value="topic_page" name="referer">
-                <button type="submit" class="glyphicon glyphicon-chevron-down vote-button"></button>
-                {% csrf_token %}
-            </form>
-            {{ topic.downvotes }}
-        </div> -->
         <span style="margin-left:20px">
             <span class="vote">
                 <form method="post" style="display: inline"
@@ -51,7 +33,7 @@
         <article>
             <div class="discussion">
                 {% if topic.image %}
-                    <img class="thumb" width="300px" src="{{ topic.image.url }}" alt="" />
+                    <img class="thumb" width="200px" src="{{ topic.image.url }}" alt="" />
                 {% endif %}
                 <p class="description">{{ topic.text | safe }}</p>
             </div>
@@ -64,7 +46,7 @@
                 <article>
                     <div class="discussion">
                         {% if comment.image %}
-                            <img class="thumb" width="300px" src="{{ comment.image.url }}" alt="" />
+                            <img class="thumb" width="200px" src="{{ comment.image.url }}" alt="" />
                         {% endif %}
                         <p>{{ comment.text }}</p>
                     </div>
