@@ -27,7 +27,7 @@
                 <li><a href="{% url 'forum:show_category' category.name %}">{{ category.title }}</a></li>
             {% endfor %}
         {% else %}
-            <p>No categories are available.</p>
+            <p class="no-items">No categories are available.</p>
         {% endif %}
     </ul>
 </nav>
